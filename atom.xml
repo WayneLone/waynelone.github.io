@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Wayne&#39;s Blog</title>
+  <subtitle>Do it, do better!</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://www.smallcheck.net/"/>
+  <updated>2017-03-22T06:00:48.000Z</updated>
+  <id>http://www.smallcheck.net/</id>
+  
+  <author>
+    <name>Wayne Wang</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>搭建ss-panel-v3-mod环境小记</title>
+    <link href="http://www.smallcheck.net/2017/03/21/build-ss/"/>
+    <id>http://www.smallcheck.net/2017/03/21/build-ss/</id>
+    <published>2017-03-21T09:53:01.000Z</published>
+    <updated>2017-03-22T06:00:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>搭建这个环境可把我折腾坏了，持续将近一周，总是出现各种错误（自己有点笨而已）。特此写下这篇文章来记录自己踩过的坑</p>
+<h2 id="服务器环境"><a href="#服务器环境" class="headerlink" title="服务器环境"></a>服务器环境</h2><ol>
+<li>服务器vps - 本人使用的是 <a href="https://bwh1.net/" target="_blank" rel="external">搬瓦工</a> （bandwagonhost.com已被墙，此站点亦为官方站点），个人感觉速度还可以，用了也很久了。</li>
+<li>操作系统CentOS 7 x64（以下操作都以全新CentOS为准 不含radius配置）</li>
+</ol>
+<h2 id="系统配置说明（可跳过）"><a href="#系统配置说明（可跳过）" class="headerlink" title="系统配置说明（可跳过）"></a>系统配置说明（可跳过）</h2><ol>
+<li><p>配置epel Repository</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">rpm -ivh epel-release-7-9.noarch.rpm</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置vim 编辑<code>/etc/vimrc</code>（目的：防止打开config.php文件时乱码）</p>
+ <figure class="highlight bash"><figcaption><span>/etc/vimrc</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="built_in">set</span> nu <span class="comment"># 设置行号</span></div><div class="line"><span class="built_in">set</span> fileencodings=utf-8,gb2312,gbk,gb18030</div><div class="line"><span class="built_in">set</span> termencoding=utf-8</div><div class="line"><span class="built_in">set</span> fileformats=unix</div><div class="line"><span class="built_in">set</span> encoding=prc</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="前端安装说明"><a href="#前端安装说明" class="headerlink" title="前端安装说明"></a>前端安装说明</h2><h3 id="安装lnmp"><a href="#安装lnmp" class="headerlink" title="安装lnmp"></a>安装lnmp</h3><ol>
+<li><p>安装screen，目的：安装lnmp时间过长防止连接中断引发不必要的错误，安装教程参考 <a href="https://www.vpser.net/manage/screen.html" target="_blank" rel="external">screen教程</a>，如遇中断可使用下面命令恢复，提前是你创建了screen会话 （此步骤可跳过）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">screen -r lnmp</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装lnmp包，可去该<a href="https://lnmp.org/download.html" target="_blank" rel="external">站点</a>查看最新可用的包</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget http://soft.vpser.net/lnmp/lnmp1.3-full.tar.gz</div><div class="line">tar xvzf lnmp1.3-full.tar.gz &amp;&amp; <span class="built_in">cd</span> lnmp1.3-full</div><div class="line">./install.sh</div></pre></td></tr></table></figure>
+<p> 安装组件 设置MySQL账户root密码、PHP、Nginx（仅供参考）<br> <img src="/img/lnmp01.png" alt="lnmp" title="安装lnmp"></p>
+</li>
+<li><p>新建vhost，并创建数据库</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">lnmp vhost add</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在enter domain时，建议填写真实域名 也可以在nginx配置文件中配置（配置<code>server_name</code>)，可以直接通过域名访问，提前是你域名做了解析</p>
+</blockquote>
+<p> 设置如图片所示（仅供参考）<br> <img src="/img/lnmp02.png" alt="vhost config" title="添加vhost"></p>
+</li>
+<li><p>配置nginx</p>
+<p> 对Nginx进行一些细节配置，打开<code>/usr/local/nginx/conf/vhost/{your domain}.conf</code>，添加下面代码到 <code>server</code> 配置节</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">location /</div><div class="line">&#123;</div><div class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 修改<code>root</code>配置节，修改为<code>root /home/wwwroot/{your domain}/public</code></p>
+</li>
+<li><p>PHP程序安装</p>
+<ul>
+<li><p>下载程序代码，执行下面命令</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/wwwroot/&#123;your domain&#125;</div><div class="line">yum install git -y</div><div class="line">git <span class="built_in">clone</span> https://github.com/glzjin/ss-panel-v3-mod.git tmp -b new_master &amp;&amp; mv tmp/.git . &amp;&amp; rm -rf tmp &amp;&amp; git reset --hard</div></pre></td></tr></table></figure>
+</li>
+<li><p>修改网站配置，添加php对目录操作权限</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/wwwroot/&#123;your domain&#125;</div><div class="line">chown -R root:root *</div><div class="line">chmod -R 777 *</div><div class="line">chown -R www:www storage</div><div class="line">chattr -i .user.ini</div><div class="line">mv .user.ini public</div><div class="line"><span class="built_in">cd</span> public</div><div class="line">chattr +i .user.ini <span class="comment"># 重新添加回权限</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>重启一下nginx</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">service nginx restart</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="配置数据库"><a href="#配置数据库" class="headerlink" title="配置数据库"></a>配置数据库</h3><ol>
+<li><p>通过浏览器访问<code>phpMyAdmin</code>，地址为<code>http://{your host ip}/phpmyadmin/</code>（建议修改目录名称防止暴露数据库，执行如下脚本），输入MySQL帐户root和密码，选择你在添加nginx vhost时设置的数据库名称</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/wwwroot/default/</div><div class="line">mv phpmyadmin &#123;new dir name&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>我是直接通过<code>SQL</code>菜单手动执行SQL来创建数据库表的，<a href="https://github.com/esdeathlove/ss-panel-v3-mod/blob/new_master/sql/glzjin_all.sql" target="_blank" rel="external">SQL脚本 glzjin_all.sql</a></p>
+<blockquote>
+<p>这个脚本中有些小问题，需要修改一下再执行，修改代码片段<code>/*!40101 SET ...</code>为<code>/* !40101 SET ...</code>（*号和！号之间加个空格）</p>
+</blockquote>
+<p> <img src="/img/lnmp03.png" alt="导入glzjin_all.sql"></p>
+</li>
+</ol>
+<h3 id="安装PHP依赖-同步用户等信息"><a href="#安装PHP依赖-同步用户等信息" class="headerlink" title="安装PHP依赖 同步用户等信息"></a>安装PHP依赖 同步用户等信息</h3><ol>
+<li><p>安装php依赖 执行如下脚本</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /home/wwwroot/&#123;your domain&#125;</div><div class="line">php composer.phar install</div><div class="line">cp config/.config.php.example config/.config.php</div><div class="line">vim config/.config.php</div></pre></td></tr></table></figure>
+</li>
+<li><p>进行相应的配置（配置.config.php文件）</p>
+<p> 主要对站点名称（<code>$System_Config[&#39;appName&#39;]</code>）、<strong>后端访问token</strong>（<code>$System_Config[&#39;muKey&#39;]</code>）、验证邮件配置（smtp or mailgun）、注册后获得验证码数量（<code>$System_Config[&#39;inviteNum&#39;]</code>）、数据库配置、多用户混淆后缀（<code>$System_Config[&#39;mu_suffix&#39;]</code>）</p>
+ <figure class="highlight php"><figcaption><span>config/.config.php</span></figcaption><table><tr><td class="code"><pre><div class="line">$System_Config[<span class="string">'appName'</span>] = <span class="string">''</span>; <span class="comment">// 站点名称</span></div><div class="line">$System_Config[<span class="string">'muKey'</span>] = <span class="string">''</span>;   <span class="comment">// mu key用于后端python访问时的access token</span></div><div class="line">$System_Config[<span class="string">'mailDriver'</span>] = <span class="string">'mailgun'</span>;   <span class="comment">// 邮件 选项值为mailgun/stmp 分别对应着 #stmp #mailgun配置节组</span></div><div class="line">$System_Config[<span class="string">'inviteNum'</span>] = <span class="string">'0'</span>;  <span class="comment">// 注册后获得的邀请码数量</span></div><div class="line"><span class="comment"># database 数据库配置</span></div><div class="line">$System_Config[<span class="string">'db_driver'</span>] = <span class="string">'mysql'</span>;</div><div class="line">$System_Config[<span class="string">'db_host'</span>] = <span class="string">'localhost'</span>;</div><div class="line">$System_Config[<span class="string">'db_database'</span>] = <span class="string">''</span>;</div><div class="line">$System_Config[<span class="string">'db_username'</span>] = <span class="string">''</span>;</div><div class="line">$System_Config[<span class="string">'db_password'</span>] = <span class="string">''</span>;</div><div class="line">$System_Config[<span class="string">'db_charset'</span>] = <span class="string">'utf8'</span>;</div><div class="line">$System_Config[<span class="string">'db_collation'</span>] = <span class="string">'utf8_general_ci'</span>;</div><div class="line">$System_Config[<span class="string">'db_prefix'</span>] = <span class="string">''</span>;</div><div class="line"><span class="comment">#多用户混淆参数后缀</span></div><div class="line">$System_Config[<span class="string">'mu_suffix'</span>]=<span class="string">'baidu.com'</span>;</div><div class="line"><span class="comment"># 多用户混淆参数表达式，%5m代表取用户特征 md5 的前五位，%id 代表用户id,%suffix 代表上面这个后缀。</span></div><div class="line">$System_Config[<span class="string">'mu_regex'</span>]=<span class="string">'%5m%id.%suffix'</span>;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注：muKey和mu_suffix主要用于和python后端通信使用，因此在后端python中userapiconfig.py文件进行同样的设置，具体对应如下</p>
+</blockquote>
+ <figure class="highlight python"><figcaption><span>userapiconfig.py</span></figcaption><table><tr><td class="code"><pre><div class="line">MU_SUFFIX = <span class="string">'&#123;.config.php $System_Config["mu_suffix"]&#125;'</span></div><div class="line">WEBAPI_TOKEN = <span class="string">'&#123;.config.php $System_Config["muKey"]&#125;'</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>创建管理员账户，用来登录站点配置信息</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">php -n xcat createAdmin</div></pre></td></tr></table></figure>
+</li>
+<li><p>同步用户，执行如下命令</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">php xcat syncusers</div></pre></td></tr></table></figure>
+<p> 编辑cron，执行<code>crontab -e</code>，输入以下内容</p>
+ <figure class="highlight bash"><figcaption><span>crontab -e</span></figcaption><table><tr><td class="code"><pre><div class="line">30 22 * * * php /home/wwwroot/ss.panel/xcat sendDiaryMail</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat synclogin</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat syncvpn</div><div class="line">0 0 * * * php -n /home/wwwroot/ss.panel/xcat dailyjob</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat checkjob    </div><div class="line">*/1 * * * * php -n /home/wwwroot/ss.panel/xcat syncnas</div></pre></td></tr></table></figure>
+</li>
+<li><p>没出什么问题的话，现在<strong>ss-panel-v3-mod</strong>已经能运行起来了，现在进行节点配置</p>
+<blockquote>
+<p>进行此步的目的是为了在userapiconfig.py中填写<code>NODE_ID = {node id}</code></p>
+</blockquote>
+<ul>
+<li><p>用第3步创建的管理员登录系统后，选择左下角的<code>管理面板</code></p>
+</li>
+<li><p>进入<code>管理面板</code>后，选择左侧的<code>节点列表</code>，再点击右下角的<code>添加</code>按钮 主要填写节点名称、节点地址、节点IP、加密方式、流量比例、节点状态、节点类型，可参考：<a href="https://github.com/esdeathlove/ss-panel-v3-mod/wiki/%E9%AD%94%E6%94%B9%E7%89%88%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%B4%E6%98%8E" target="_blank" rel="external">节点添加说明</a></p>
+</li>
+<li><p>如图所示：<br><img src="/img/lnmp04.png" alt="添加节点" title="添加节点"></p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="后端安装说明"><a href="#后端安装说明" class="headerlink" title="后端安装说明"></a>后端安装说明</h2><blockquote>
+<p>后端使用的是 <a href="https://github.com/shadowsocksr/shadowsocksr" target="_blank" rel="external">ShadowsocksR</a></p>
+</blockquote>
+<h3 id="安装工具"><a href="#安装工具" class="headerlink" title="安装工具"></a>安装工具</h3><ol>
+<li><p>安装pip（python包管理器），执行如下命令：</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install python-setuptools &amp;&amp; easy_install pip</div></pre></td></tr></table></figure>
+</li>
+<li><p>安装libsodium</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum -y groupinstall <span class="string">"Development Tools"</span></div><div class="line">wget https://github.com/jedisct1/libsodium/releases/download/1.0.10/libsodium-1.0.10.tar.gz</div><div class="line">tar xf libsodium-1.0.10.tar.gz &amp;&amp; <span class="built_in">cd</span> libsodium-1.0.10</div><div class="line">./configure &amp;&amp; make -j2 &amp;&amp; make install</div><div class="line"><span class="built_in">echo</span> /usr/<span class="built_in">local</span>/lib &gt; /etc/ld.so.conf.d/usr_local_lib.conf</div><div class="line">ldconfig</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="配置服务"><a href="#配置服务" class="headerlink" title="配置服务"></a>配置服务</h3><ol>
+<li><p>下载程序源代码</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/</div><div class="line">git <span class="built_in">clone</span> -b manyuser https://github.com/glzjin/shadowsocks.git</div></pre></td></tr></table></figure>
+</li>
+<li><p>进入shadowsocks目录，安装依赖</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/shadowsocks</div><div class="line">yum -y install python-devel</div><div class="line">yum -y install libffi-devel</div><div class="line">yum -y install openssl-devel</div><div class="line">pip install requests</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置程序</p>
+<ul>
+<li><p>得到配置文件</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/shadowsocks</div><div class="line">cp apiconfig.py userapiconfig.py</div><div class="line">cp config.json user-config.json</div></pre></td></tr></table></figure>
+</li>
+<li><p>编辑userapiconfig.py，以下仅贴出重要配置</p>
+  <figure class="highlight python"><figcaption><span>userapiconfig.py</span></figcaption><table><tr><td class="code"><pre><div class="line">NODE_ID = <span class="number">1</span> <span class="comment"># 此处修改为之前添加的节点id eg: 3</span></div><div class="line"></div><div class="line">MU_SUFFIX = <span class="string">'zhaoj.in'</span>  <span class="comment"># 此处修改为.config.php中$System_Config['mu_suffix']</span></div><div class="line">MU_REGEX = <span class="string">'%5m%id.%suffix'</span></div><div class="line"></div><div class="line">API_INTERFACE = <span class="string">'modwebapi'</span>  <span class="comment"># 填写为modwebapi</span></div><div class="line"></div><div class="line">WEBAPI_URL = <span class="string">'https://zhaoj.in'</span> <span class="comment"># 此处修改为你当前的站点</span></div><div class="line">WEBAPI_TOKEN = <span class="string">'glzjin'</span> <span class="comment"># 此处修改为.config.php中$System_Config['muKey']</span></div><div class="line"></div><div class="line"><span class="comment"># Mysql 数据库配置和.config.php配置一样</span></div><div class="line">MYSQL_HOST = <span class="string">'127.0.0.1'</span></div><div class="line">MYSQL_PORT = <span class="number">3306</span></div><div class="line">MYSQL_USER = <span class="string">'ss'</span></div><div class="line">MYSQL_PASS = <span class="string">'ss'</span></div><div class="line">MYSQL_DB = <span class="string">'shadowsocks'</span></div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>执行以下命令，测试服务是否可用</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/shadowsocks/</div><div class="line">python server.py <span class="comment"># 用于调试</span></div></pre></td></tr></table></figure>
+<ul>
+<li><p>如果服务报错，进行调试的话，主要有以下几个文件：</p>
+<ul>
+<li>php程序中的<code>app/Middleware/Mod_Mu.php</code>文件，主要负责校验token（muKey）</li>
+<li>php程序中的<code>config/routes.php</code>，主要是路由配置，查看<code>$app-&gt;group(&#39;/mod_mu&#39;,...</code>，此处代码块主要用于和python交互的</li>
+<li>python程序中的<code>webapi_utils.py</code>文件，可以适当输出<code>uri</code>参数，观察当前请求的php地址</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>在第4步成功的提前下，优化程序</p>
+<ul>
+<li><p>编辑<code>/etc/security/limits.conf</code>，在最后添加如下代码：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">* soft nofile 51200</div><div class="line">* hard nofile 51200</div></pre></td></tr></table></figure>
+</li>
+<li><p>运行命令<code>ulimit -n 51200</code></p>
+</li>
+<li><p>编辑防火墙配置<code>/etc/sysctl.conf</code>配置如下，配置完成后使用<code>systcl -p</code>使其生效</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">fs.file-max = 51200</div><div class="line">net.core.rmem_max = 67108864</div><div class="line">net.core.wmem_max = 67108864</div><div class="line">net.core.netdev_max_backlog = 250000</div><div class="line">net.core.somaxconn = 4096</div><div class="line">net.ipv4.tcp_syncookies = 1</div><div class="line">net.ipv4.tcp_tw_reuse = 1</div><div class="line">net.ipv4.tcp_tw_recycle = 0</div><div class="line">net.ipv4.tcp_fin_timeout = 30</div><div class="line">net.ipv4.tcp_keepalive_time = 1200</div><div class="line">net.ipv4.ip_local_port_range = 10000 65000</div><div class="line">net.ipv4.tcp_max_syn_backlog = 8192</div><div class="line">net.ipv4.tcp_max_tw_buckets = 5000</div><div class="line">net.ipv4.tcp_fastopen = 3</div><div class="line">net.ipv4.tcp_rmem = 4096 87380 67108864</div><div class="line">net.ipv4.tcp_wmem = 4096 65536 67108864</div><div class="line">net.ipv4.tcp_mtu_probing = 1</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>安装配置<code>supervisord</code></p>
+<ul>
+<li><p>安装<code>supervisord</code>，执行如下脚本</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">yum install supervisor python-pip -y</div><div class="line">pip install supervisor==3.1</div><div class="line">chkconfig supervisord on</div><div class="line">wget https://github.com/glzjin/ssshell-jar/raw/master/supervisord.conf -O /etc/supervisord.conf</div><div class="line">wget https://github.com/glzjin/ssshell-jar/raw/master/supervisord -O /etc/init.d/supervisord</div></pre></td></tr></table></figure>
+</li>
+<li><p>编辑<code>/etc/supervisord.conf</code>，将最后一段修改如下：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">[program:mu]</div><div class="line"><span class="built_in">command</span>=python /root/shadowsocks/server.py</div><div class="line">directory=/root/shadowsocks</div><div class="line">autorestart=<span class="literal">true</span></div><div class="line">startsecs=10</div><div class="line">startretries=36</div><div class="line">redirect_stderr=<span class="literal">true</span></div><div class="line">user=root ; setuid to this UNIX account to run the program</div><div class="line">log_stdout=<span class="literal">true</span> ; <span class="keyword">if</span> <span class="literal">true</span>, <span class="built_in">log</span> program stdout (default <span class="literal">true</span>)</div><div class="line">log_stderr=<span class="literal">true</span> ; <span class="keyword">if</span> <span class="literal">true</span>, <span class="built_in">log</span> program stderr (def <span class="literal">false</span>)</div><div class="line">logfile=/var/<span class="built_in">log</span>/mu.log ; child <span class="built_in">log</span> path, use NONE <span class="keyword">for</span> none; default AUTO</div><div class="line">;logfile_maxbytes=1MB ; max <span class="comment"># logfile bytes b4 rotation (default 50MB)</span></div><div class="line">;logfile_backups=10 ; <span class="comment"># of logfile backups (default 10)</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>编辑<code>/etc/init.d/supervisord</code>在这两行之间添加<code>ulimit -n 51200</code></p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">echo</span> -n $<span class="string">"Starting supervisord: "</span></div><div class="line"><span class="built_in">ulimit</span> -n 51200</div><div class="line">daemon supervisord -c /etc/supervisord.conf</div></pre></td></tr></table></figure>
+</li>
+<li><p>启动<code>supervisord</code>，执行以下命令</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">service supervisord start</div></pre></td></tr></table></figure>
+</li>
+<li><p>关于升级</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line"><span class="built_in">cd</span> /usr/shadowsocks</div><div class="line">git pull</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="主要参考资料："><a href="#主要参考资料：" class="headerlink" title="主要参考资料："></a>主要参考资料：</h2><ul>
+<li><a href="https://github.com/esdeathlove/ss-panel-v3-mod/wiki/%E5%AE%89%E8%A3%85%E8%AF%B4%E6%98%8E" target="_blank" rel="external">ss-panel-v3-mod安装说明</a></li>
+<li><a href="https://github.com/glzjin/shadowsocks/wiki/%E8%AF%B4%E6%98%8E%E4%BB%A5%E5%8F%8A%E5%AE%89%E8%A3%85%E6%96%B9%E6%B3%95" target="_blank" rel="external">shadowsocks for python 说明以及安装方法</a></li>
+<li><a href="https://github.com/esdeathlove/ss-panel-v3-mod/wiki/%E9%AD%94%E6%94%B9%E7%89%88%E6%B7%BB%E5%8A%A0%E8%8A%82%E7%82%B9%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E8%AF%B4%E6%98%8E" target="_blank" rel="external">魔改版添加节点的几种方式说明</a></li>
+<li><a href="https://github.com/esdeathlove/shadowsocks/wiki/%E9%87%8D%E5%A4%A7%E6%9B%B4%E6%96%B0%E6%97%A5%E5%BF%97" target="_blank" rel="external">shadowsocks for python 重大更新日志</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;搭建这个环境可把我折腾坏了，持续将近一周，总是出现各种错误（自己有点笨而已）。特此写下这篇文章来记录自己踩过的坑&lt;/p&gt;
+&lt;h2 id=&quot;服务器环境&quot;&gt;&lt;a href=&quot;#服务器环境&quot; class=&quot;headerlink&quot; title=&quot;服务器环境&quot;&gt;&lt;/a&gt;服务器环境&lt;/
+    
+    </summary>
+    
+    
+      <category term="ss-panel-v3-mod" scheme="http://www.smallcheck.net/tags/ss-panel-v3-mod/"/>
+    
+      <category term="CentOS" scheme="http://www.smallcheck.net/tags/CentOS/"/>
+    
+      <category term="lnmp" scheme="http://www.smallcheck.net/tags/lnmp/"/>
+    
+  </entry>
+  
+</feed>
