@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.smallcheck.net/"/>
-  <updated>2017-03-22T06:00:48.000Z</updated>
+  <updated>2017-03-22T11:09:35.587Z</updated>
   <id>http://www.smallcheck.net/</id>
   
   <author>
@@ -14,6 +14,34 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>VS Code搭建AngularJs 1.x开发环境</title>
+    <link href="http://www.smallcheck.net/2017/03/22/vscode-angular/"/>
+    <id>http://www.smallcheck.net/2017/03/22/vscode-angular/</id>
+    <published>2017-03-22T10:50:11.000Z</published>
+    <updated>2017-03-22T11:09:35.587Z</updated>
+    
+    <content type="html"><![CDATA[<p>使用VS Code开发AngularJs 1.x，主要为了开发的体验（智能提示）</p>
+<h2 id="安装基础工具"><a href="#安装基础工具" class="headerlink" title="安装基础工具"></a>安装基础工具</h2><h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>Node.js下载地址：<a href="https://nodejs.org/en/" target="_blank" rel="external">https://nodejs.org/en/</a></p>
+<h3 id="安装TypeScript"><a href="#安装TypeScript" class="headerlink" title="安装TypeScript"></a>安装TypeScript</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">npm install -g typescript</div></pre></td></tr></table></figure>
+<h3 id="安装typings-TypeScript-Definition-Manager"><a href="#安装typings-TypeScript-Definition-Manager" class="headerlink" title="安装typings (TypeScript Definition Manager)"></a>安装typings (TypeScript Definition Manager)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">npm install -g typings</div></pre></td></tr></table></figure>
+<h2 id="进行开发配置"><a href="#进行开发配置" class="headerlink" title="进行开发配置"></a>进行开发配置</h2><p>## </p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;使用VS Code开发AngularJs 1.x，主要为了开发的体验（智能提示）&lt;/p&gt;
+&lt;h2 id=&quot;安装基础工具&quot;&gt;&lt;a href=&quot;#安装基础工具&quot; class=&quot;headerlink&quot; title=&quot;安装基础工具&quot;&gt;&lt;/a&gt;安装基础工具&lt;/h2&gt;&lt;h3 id=&quot;安
+    
+    </summary>
+    
+    
+      <category term="vscode" scheme="http://www.smallcheck.net/tags/vscode/"/>
+    
+      <category term="angularjs" scheme="http://www.smallcheck.net/tags/angularjs/"/>
+    
+  </entry>
   
   <entry>
     <title>搭建ss-panel-v3-mod环境小记</title>
