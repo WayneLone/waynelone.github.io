@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://www.smallcheck.net/"/>
-  <updated>2017-03-22T11:09:35.587Z</updated>
+  <updated>2017-06-09T03:00:16.368Z</updated>
   <id>http://www.smallcheck.net/</id>
   
   <author>
@@ -16,17 +16,84 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>lnmp &amp; ss的那些事</title>
+    <link href="http://www.smallcheck.net/2017/06/09/lnmp-ss-more/"/>
+    <id>http://www.smallcheck.net/2017/06/09/lnmp-ss-more/</id>
+    <published>2017-06-09T00:21:00.000Z</published>
+    <updated>2017-06-09T03:00:16.368Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近阿里云在频繁的搞活动，于是又入手了一台新加坡主机（控制不住我自己啊::&gt;_&lt;::），接着又走了一遍<a href="https://github.com/esdeathlove/ss-panel-v3-mod" target="_blank" rel="external">ss-panel-v3-mod</a>的搭建。这次感触颇深，主要原因是因为自己太追“潮流”引起的</p>
+<h2 id="部署环境概述"><a href="#部署环境概述" class="headerlink" title="部署环境概述"></a>部署环境概述</h2><ol>
+<li>操作系统为<code>CentOS</code> 7.3</li>
+<li><code>lnmp</code>一键安装包的版本为1.4</li>
+<li>具体的组件的版本，<code>PHP</code>选择了版本为7.1.5、<code>MySQL</code>版本为5.5.56</li>
+</ol>
+<h2 id="总结出现的问题（未完待续）"><a href="#总结出现的问题（未完待续）" class="headerlink" title="总结出现的问题（未完待续）"></a>总结出现的问题（未完待续）</h2><h3 id="访问前端网站-ss-panel-v3-mod-直接报错ERROR-500"><a href="#访问前端网站-ss-panel-v3-mod-直接报错ERROR-500" class="headerlink" title="访问前端网站(ss-panel-v3-mod)直接报错ERROR 500"></a>访问前端网站(ss-panel-v3-mod)直接报错<code>ERROR 500</code></h3><h4 id="1-问题还原"><a href="#1-问题还原" class="headerlink" title="1. 问题还原"></a>1. 问题还原</h4><p>①安装完<code>lnmp</code>包，一切顺利正常；</p>
+<p>②下载完<a href="https://github.com/esdeathlove/ss-panel-v3-mod" target="_blank" rel="external">ss-panel-v3-mod</a>源码到网站的根目录下；</p>
+<p>③创建完数据库；④使用composer安装<code>ss-panel-v3-mod</code>所需的组件；</p>
+<p>⑤配置了<code>/home/wwwroot/{WEB_SITE_DIR}/config/.config.php</code>；</p>
+<p>⑥创建了管理员帐户。兴高采烈的访问了一下网站，结果返回了500（心一下就纠结了）, what’s wrong ？</p>
+<h4 id="2-尝试解决"><a href="#2-尝试解决" class="headerlink" title="2. 尝试解决"></a>2. 尝试解决</h4><p>接着就去翻看<a href="https://github.com/esdeathlove/ss-panel-v3-mod" target="_blank" rel="external">ss-panel-v3-mod</a>的文档，按照<a href="https://github.com/esdeathlove/ss-panel-v3-mod/wiki/%E5%A6%82%E4%BD%95%E6%AD%A3%E7%A1%AE%E5%9C%B0%E6%8E%92%E6%9F%A5%E4%B8%8E%E5%8F%8D%E9%A6%88%E9%97%AE%E9%A2%98" target="_blank" rel="external">错误排查文档</a>把<code>config.php</code>里的<code>$System_Config[&#39;debug&#39;]</code>值修改为了<code>true</code>，满心欢喜着期待错误出现，结果然并卵用，依旧是<code>500</code></p>
+<p>心一下就凉了大半节，经过一番搜索+思考，总算把错误信息给整出来了。说说怎么整出来的吧！那就是修改<code>php.ini</code>相信每个phper都是知道的，可惜我不是phper（我是dotNet）。<code>lnmp</code>中<code>php.ini</code>所处位置为<code>/usr/local/php/etc/php.ini</code>，修改<code>php.ini</code>文件如下：</p>
+<pre><code><figure class="highlight ini"><figcaption><span>/usr/local/php/etc/php.ini</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="comment">; 显示错误信息</span></div><div class="line"><span class="attr">display_errors</span> = <span class="literal">On</span></div><div class="line"><span class="comment">; 显示php开始错误信息</span></div><div class="line"><span class="attr">display_startup_errors</span> = <span class="literal">On</span></div><div class="line"><span class="comment">; 日志记录错误信息</span></div><div class="line"><span class="attr">log_errors</span> = <span class="literal">On</span></div></pre></td></tr></table></figure>
+</code></pre><p>一般情况下要稍等一小会，如果不想等直接使用<code>/etc/init.d/php-fpm restart</code>，让配置起效</p>
+<blockquote>
+<p>ps: 问题解决后，建议还原设置<code>$System_Config[&#39;debug&#39;]</code>和<code>php.ini</code></p>
+</blockquote>
+<h4 id="3-错误详情"><a href="#3-错误详情" class="headerlink" title="3. 错误详情"></a>3. 错误详情</h4><pre><code><figure class="highlight php"><table><tr><td class="code"><pre><div class="line">Warning: <span class="keyword">require</span>(): open_basedir restriction in effect. File(/home/wwwroot/sspanel/bootstrap.php) is not within the allowed path(s): (/home/wwwroot/sspanel/<span class="keyword">public</span>/:/tmp/:/proc/) in /home/wwwroot/sspanel/<span class="keyword">public</span>/index.php on line <span class="number">7</span></div><div class="line"></div><div class="line">Warning: <span class="keyword">require</span>(/home/wwwroot/sspanel/bootstrap.php): failed to open stream: Operation not permitted in /home/wwwroot/sspanel/<span class="keyword">public</span>/index.php on line <span class="number">7</span></div><div class="line"></div><div class="line">Fatal error: <span class="keyword">require</span>(): Failed opening required <span class="string">'/home/wwwroot/sspanel/public/../bootstrap.php'</span> (include_path=<span class="string">'.:/usr/local/php/lib/php'</span>) in /home/wwwroot/sspanel/<span class="keyword">public</span>/index.php on line <span class="number">7</span></div></pre></td></tr></table></figure>
+</code></pre><h4 id="4-解决方案"><a href="#4-解决方案" class="headerlink" title="4. 解决方案"></a>4. 解决方案</h4><p>起因是PHP基于<code>open_basedir</code>设置，来限制PHP程序跨目录访问的安全策略，其使用<a href="https://secure.php.net/manual/zh/configuration.file.per-user.php" target="_blank" rel="external">.user.ini</a>文件和<code>nginx</code>来配合（作用和.htaccess文件相同，这个是基于Apache httpd服务器）。</p>
+<blockquote>
+<p><code>lnmp1.4</code>一键安装对其配置是存在于<code>/usr/local/nginx/conf/fastcgi.conf</code>文件<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，个人感觉这个设计有点别扭，这个配置对所有站点都写死了不灵活。</p>
+</blockquote>
+<p>对于详细错误的解释：由于我们在站点配置文件（<code>/usr/local/nginx/conf/vhost/{WEB_SITE}.conf</code>），网站根目录配置<code>root  /home/wwwroot/{WEB_SITE_NAME};</code>这一行进行修改（修改成了<code>root  /home/wwwroot/{WEB_SITE_NAME}\public;</code>），因此<code>open_basedir=$document_root/...</code>中<code>$document_root</code>指的是网站的<code>public</code>目录，而非<code>/home/wwwroot/{WEB_SITE_NAME}</code>，因此在读取<code>bootstrap.php</code>文件（而该文件正好位于<code>/home/wwwroot/{WEB_SITE_NAME}</code>目录下，在<code>public</code>目录上一层）时出错，受跨目录访问安全限制。</p>
+<p>主要有两种解决方案：</p>
+<p>⑴ 直接注释掉<code>fastcgi.conf</code>文件中的<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>这一行，一棒子打死了目录访问安全策略</p>
+<p>⑵ 在<code>fastcgi.conf</code>文件中，修改<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，以<code>test.com</code>为例（此域名为添加vhost时输入的域名），修改内容如下：（这样做的坏处时每次添加vhost时都需要手动添加⊙﹏⊙）</p>
+<pre><code><figure class="highlight"><figcaption><span>fastcgi.conf</span></figcaption><table><tr><td class="code"><pre><div class="line">fastcgi_param PHP_ADMIN_VALUE "open_basedir=/home/wwwroot/test.com/:/tmp/:/proc/";</div></pre></td></tr></table></figure>
+</code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://github.com/esdeathlove/ss-panel-v3-mod" target="_blank" rel="external">ss-panel-v3-mod</a></li>
+<li><a href="https://secure.php.net/manual/zh/configuration.file.per-user.php" target="_blank" rel="external">PHP中.user.ini文件</a></li>
+<li><a href="https://secure.php.net/manual/zh/install.fpm.configuration.php" target="_blank" rel="external">PHP中php-fpm.conf全局配置段</a></li>
+<li><a href="https://lnmp.org/install.html" target="_blank" rel="external">LNMP安装配置</a></li>
+<li><a href="https://lnmp.org/faq/lnmp-vhost-add-howto.html" target="_blank" rel="external">LNMP添加、删除虚拟主机及伪静态使用教程</a></li>
+<li><a href="http://blog.csdn.net/whatday/article/details/50833934" target="_blank" rel="external">php输出所有错误信息</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;最近阿里云在频繁的搞活动，于是又入手了一台新加坡主机（控制不住我自己啊::&amp;gt;_&amp;lt;::），接着又走了一遍&lt;a href=&quot;https://github.com/esdeathlove/ss-panel-v3-mod&quot; target=&quot;_blank&quot; rel=&quot;ex
+    
+    </summary>
+    
+    
+      <category term="ss-panel-v3-mod" scheme="http://www.smallcheck.net/tags/ss-panel-v3-mod/"/>
+    
+      <category term="lnmp" scheme="http://www.smallcheck.net/tags/lnmp/"/>
+    
+  </entry>
+  
+  <entry>
     <title>VS Code搭建AngularJs 1.x开发环境</title>
     <link href="http://www.smallcheck.net/2017/03/22/vscode-angular/"/>
     <id>http://www.smallcheck.net/2017/03/22/vscode-angular/</id>
     <published>2017-03-22T10:50:11.000Z</published>
-    <updated>2017-03-22T11:09:35.587Z</updated>
+    <updated>2017-06-02T05:05:01.862Z</updated>
     
     <content type="html"><![CDATA[<p>使用VS Code开发AngularJs 1.x，主要为了开发的体验（智能提示）</p>
 <h2 id="安装基础工具"><a href="#安装基础工具" class="headerlink" title="安装基础工具"></a>安装基础工具</h2><h3 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h3><p>Node.js下载地址：<a href="https://nodejs.org/en/" target="_blank" rel="external">https://nodejs.org/en/</a></p>
 <h3 id="安装TypeScript"><a href="#安装TypeScript" class="headerlink" title="安装TypeScript"></a>安装TypeScript</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">npm install -g typescript</div></pre></td></tr></table></figure>
 <h3 id="安装typings-TypeScript-Definition-Manager"><a href="#安装typings-TypeScript-Definition-Manager" class="headerlink" title="安装typings (TypeScript Definition Manager)"></a>安装typings (TypeScript Definition Manager)</h3><figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">npm install -g typings</div></pre></td></tr></table></figure>
-<h2 id="进行开发配置"><a href="#进行开发配置" class="headerlink" title="进行开发配置"></a>进行开发配置</h2><p>## </p>
+<h2 id="进行开发配置"><a href="#进行开发配置" class="headerlink" title="进行开发配置"></a>进行开发配置</h2><h3 id="使用VS-code新建项目"><a href="#使用VS-code新建项目" class="headerlink" title="使用VS code新建项目"></a>使用VS code新建项目</h3><p>在项目目录中执行如下命令，初始化操作创建<code>typings.json</code>（所有项目依赖都会在里面）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">typings init</div></pre></td></tr></table></figure>
+<p>安装angular.ts来获得angularjs的智能提示，执行如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">typings install dt~angular --save</div></pre></td></tr></table></figure>
+<blockquote>
+<p>以上只安装了angularJs主文件提示，想要获得更多信息可以执行 <code>typings search angular</code></p>
+</blockquote>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a href="https://github.com/typings/typings" target="_blank" rel="external">typings github</a></li>
+</ul>
 ]]></content>
     
     <summary type="html">
@@ -48,7 +115,7 @@
     <link href="http://www.smallcheck.net/2017/03/21/build-ss/"/>
     <id>http://www.smallcheck.net/2017/03/21/build-ss/</id>
     <published>2017-03-21T09:53:01.000Z</published>
-    <updated>2017-03-22T06:00:48.000Z</updated>
+    <updated>2017-06-09T00:18:39.295Z</updated>
     
     <content type="html"><![CDATA[<p>搭建这个环境可把我折腾坏了，持续将近一周，总是出现各种错误（自己有点笨而已）。特此写下这篇文章来记录自己踩过的坑</p>
 <h2 id="服务器环境"><a href="#服务器环境" class="headerlink" title="服务器环境"></a>服务器环境</h2><ol>
@@ -60,7 +127,7 @@
  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">rpm -ivh epel-release-7-9.noarch.rpm</div></pre></td></tr></table></figure>
 </li>
 <li><p>配置vim 编辑<code>/etc/vimrc</code>（目的：防止打开config.php文件时乱码）</p>
- <figure class="highlight bash"><figcaption><span>/etc/vimrc</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="built_in">set</span> nu <span class="comment"># 设置行号</span></div><div class="line"><span class="built_in">set</span> fileencodings=utf-8,gb2312,gbk,gb18030</div><div class="line"><span class="built_in">set</span> termencoding=utf-8</div><div class="line"><span class="built_in">set</span> fileformats=unix</div><div class="line"><span class="built_in">set</span> encoding=prc</div></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>/etc/vimrc</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="comment"># 设置行号</span></div><div class="line"><span class="built_in">set</span> nu</div><div class="line"><span class="built_in">set</span> fileencodings=utf-8,gb2312,gbk,gb18030</div><div class="line"><span class="built_in">set</span> termencoding=utf-8</div><div class="line"><span class="built_in">set</span> fileformats=unix</div><div class="line"><span class="built_in">set</span> encoding=prc</div><div class="line"><span class="comment"># 设置缩进</span></div><div class="line"><span class="built_in">set</span> ts=4</div><div class="line"><span class="built_in">set</span> expandtab</div><div class="line"><span class="built_in">set</span> autoindent</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <h2 id="前端安装说明"><a href="#前端安装说明" class="headerlink" title="前端安装说明"></a>前端安装说明</h2><h3 id="安装lnmp"><a href="#安装lnmp" class="headerlink" title="安装lnmp"></a>安装lnmp</h3><ol>
@@ -80,7 +147,7 @@
 </li>
 <li><p>配置nginx</p>
 <p> 对Nginx进行一些细节配置，打开<code>/usr/local/nginx/conf/vhost/{your domain}.conf</code>，添加下面代码到 <code>server</code> 配置节</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">location /</div><div class="line">&#123;</div><div class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">location /</div><div class="line">&#123;</div><div class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span><span class="variable">$args</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p> 修改<code>root</code>配置节，修改为<code>root /home/wwwroot/{your domain}/public</code></p>
 </li>
 <li><p>PHP程序安装</p>
@@ -126,7 +193,7 @@
 <li><p>同步用户，执行如下命令</p>
  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">php xcat syncusers</div></pre></td></tr></table></figure>
 <p> 编辑cron，执行<code>crontab -e</code>，输入以下内容</p>
- <figure class="highlight bash"><figcaption><span>crontab -e</span></figcaption><table><tr><td class="code"><pre><div class="line">30 22 * * * php /home/wwwroot/ss.panel/xcat sendDiaryMail</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat synclogin</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat syncvpn</div><div class="line">0 0 * * * php -n /home/wwwroot/ss.panel/xcat dailyjob</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat checkjob    </div><div class="line">*/1 * * * * php -n /home/wwwroot/ss.panel/xcat syncnas</div></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>crontab -e</span></figcaption><table><tr><td class="code"><pre><div class="line">30 22 * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat sendDiaryMail</div><div class="line">*/1 * * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat synclogin</div><div class="line">*/1 * * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat syncvpn</div><div class="line">0 0 * * * php -n /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat dailyjob</div><div class="line">*/1 * * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat checkjob    </div><div class="line">*/1 * * * * php -n /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat syncnas</div></pre></td></tr></table></figure>
 </li>
 <li><p>没出什么问题的话，现在<strong>ss-panel-v3-mod</strong>已经能运行起来了，现在进行节点配置</p>
 <blockquote>

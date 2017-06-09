@@ -53,7 +53,7 @@ ga('send', 'pageview');
 <meta property="og:image" content="http://www.smallcheck.net/img/lnmp02.png">
 <meta property="og:image" content="http://www.smallcheck.net/img/lnmp03.png">
 <meta property="og:image" content="http://www.smallcheck.net/img/lnmp04.png">
-<meta property="og:updated_time" content="2017-03-22T06:00:48.000Z">
+<meta property="og:updated_time" content="2017-06-09T00:18:39.295Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建ss-panel-v3-mod环境小记">
 <meta name="twitter:description" content="搭建这个环境可把我折腾坏了，持续将近一周，总是出现各种错误（自己有点笨而已）。特此写下这篇文章来记录自己踩过的坑
@@ -212,7 +212,7 @@ ga('send', 'pageview');
  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">wget http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-9.noarch.rpm</div><div class="line">rpm -ivh epel-release-7-9.noarch.rpm</div></pre></td></tr></table></figure>
 </li>
 <li><p>配置vim 编辑<code>/etc/vimrc</code>（目的：防止打开config.php文件时乱码）</p>
- <figure class="highlight bash"><figcaption><span>/etc/vimrc</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="built_in">set</span> nu <span class="comment"># 设置行号</span></div><div class="line"><span class="built_in">set</span> fileencodings=utf-8,gb2312,gbk,gb18030</div><div class="line"><span class="built_in">set</span> termencoding=utf-8</div><div class="line"><span class="built_in">set</span> fileformats=unix</div><div class="line"><span class="built_in">set</span> encoding=prc</div></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>/etc/vimrc</span></figcaption><table><tr><td class="code"><pre><div class="line"><span class="comment"># 设置行号</span></div><div class="line"><span class="built_in">set</span> nu</div><div class="line"><span class="built_in">set</span> fileencodings=utf-8,gb2312,gbk,gb18030</div><div class="line"><span class="built_in">set</span> termencoding=utf-8</div><div class="line"><span class="built_in">set</span> fileformats=unix</div><div class="line"><span class="built_in">set</span> encoding=prc</div><div class="line"><span class="comment"># 设置缩进</span></div><div class="line"><span class="built_in">set</span> ts=4</div><div class="line"><span class="built_in">set</span> expandtab</div><div class="line"><span class="built_in">set</span> autoindent</div></pre></td></tr></table></figure>
 </li>
 </ol>
 <h2 id="前端安装说明"><a href="#前端安装说明" class="headerlink" title="前端安装说明"></a>前端安装说明</h2><h3 id="安装lnmp"><a href="#安装lnmp" class="headerlink" title="安装lnmp"></a>安装lnmp</h3><ol>
@@ -232,7 +232,7 @@ ga('send', 'pageview');
 </li>
 <li><p>配置nginx</p>
 <p> 对Nginx进行一些细节配置，打开<code>/usr/local/nginx/conf/vhost/{your domain}.conf</code>，添加下面代码到 <code>server</code> 配置节</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">location /</div><div class="line">&#123;</div><div class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">location /</div><div class="line">&#123;</div><div class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span><span class="variable">$args</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p> 修改<code>root</code>配置节，修改为<code>root /home/wwwroot/{your domain}/public</code></p>
 </li>
 <li><p>PHP程序安装</p>
@@ -278,7 +278,7 @@ ga('send', 'pageview');
 <li><p>同步用户，执行如下命令</p>
  <figure class="highlight bash"><table><tr><td class="code"><pre><div class="line">php xcat syncusers</div></pre></td></tr></table></figure>
 <p> 编辑cron，执行<code>crontab -e</code>，输入以下内容</p>
- <figure class="highlight bash"><figcaption><span>crontab -e</span></figcaption><table><tr><td class="code"><pre><div class="line">30 22 * * * php /home/wwwroot/ss.panel/xcat sendDiaryMail</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat synclogin</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat syncvpn</div><div class="line">0 0 * * * php -n /home/wwwroot/ss.panel/xcat dailyjob</div><div class="line">*/1 * * * * php /home/wwwroot/ss.panel/xcat checkjob    </div><div class="line">*/1 * * * * php -n /home/wwwroot/ss.panel/xcat syncnas</div></pre></td></tr></table></figure>
+ <figure class="highlight bash"><figcaption><span>crontab -e</span></figcaption><table><tr><td class="code"><pre><div class="line">30 22 * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat sendDiaryMail</div><div class="line">*/1 * * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat synclogin</div><div class="line">*/1 * * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat syncvpn</div><div class="line">0 0 * * * php -n /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat dailyjob</div><div class="line">*/1 * * * * php /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat checkjob    </div><div class="line">*/1 * * * * php -n /home/wwwroot/&#123;WEBSITE.NAME&#125;/xcat syncnas</div></pre></td></tr></table></figure>
 </li>
 <li><p>没出什么问题的话，现在<strong>ss-panel-v3-mod</strong>已经能运行起来了，现在进行节点配置</p>
 <blockquote>
@@ -379,7 +379,7 @@ ga('send', 'pageview');
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-03-22T06:00:48.000Z" itemprop="dateUpdated">2017年3月22日 14:00</time>
+    最后更新时间：<time datetime="2017-06-09T00:18:39.295Z" itemprop="dateUpdated">2017年6月9日 8:18</time>
 </span><br>
 
 
