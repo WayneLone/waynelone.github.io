@@ -40,7 +40,7 @@ lnmp一键安装包的版本为1.4
 总结出现的问题（未完待续）访问前端网">
 <meta property="og:type" content="article">
 <meta property="og:title" content="lnmp & ss的那些事">
-<meta property="og:url" content="http://www.smallcheck.net/2017/06/09/lnmp-ss-more/index.html">
+<meta property="og:url" content="http://www.dimsolo.com/2017/06/09/lnmp-ss-more/index.html">
 <meta property="og:site_name" content="Wayne's Blog">
 <meta property="og:description" content="最近阿里云在频繁的搞活动，于是又入手了一台新加坡主机（控制不住我自己啊::&amp;gt;_&amp;lt;::），接着又走了一遍ss-panel-v3-mod的搭建。这次感触颇深，主要原因是因为自己太追“潮流”引起的
 部署环境概述
@@ -49,7 +49,7 @@ lnmp一键安装包的版本为1.4
 具体的组件的版本，PHP选择了版本为7.1.5、MySQL版本为5.5.56
 
 总结出现的问题（未完待续）访问前端网">
-<meta property="og:updated_time" content="2017-06-09T03:00:16.368Z">
+<meta property="og:updated_time" content="2017-06-09T03:08:50.802Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="lnmp & ss的那些事">
 <meta name="twitter:description" content="最近阿里云在频繁的搞活动，于是又入手了一台新加坡主机（控制不住我自己啊::&amp;gt;_&amp;lt;::），接着又走了一遍ss-panel-v3-mod的搭建。这次感触颇深，主要原因是因为自己太追“潮流”引起的
@@ -220,12 +220,16 @@ lnmp一键安装包的版本为1.4
 <blockquote>
 <p><code>lnmp1.4</code>一键安装对其配置是存在于<code>/usr/local/nginx/conf/fastcgi.conf</code>文件<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，个人感觉这个设计有点别扭，这个配置对所有站点都写死了不灵活。</p>
 </blockquote>
-<p>对于详细错误的解释：由于我们在站点配置文件（<code>/usr/local/nginx/conf/vhost/{WEB_SITE}.conf</code>），网站根目录配置<code>root  /home/wwwroot/{WEB_SITE_NAME};</code>这一行进行修改（修改成了<code>root  /home/wwwroot/{WEB_SITE_NAME}\public;</code>），因此<code>open_basedir=$document_root/...</code>中<code>$document_root</code>指的是网站的<code>public</code>目录，而非<code>/home/wwwroot/{WEB_SITE_NAME}</code>，因此在读取<code>bootstrap.php</code>文件（而该文件正好位于<code>/home/wwwroot/{WEB_SITE_NAME}</code>目录下，在<code>public</code>目录上一层）时出错，受跨目录访问安全限制。</p>
+<p>对于详细错误的解释：由于我们在站点配置文件（<code>/usr/local/nginx/conf/vhost/{WEB_SITE}.conf</code>），网站根目录配置<code>root  /home/wwwroot/{WEB_SITE_NAME};</code>这一行进行修改（修改成了<code>root  /home/wwwroot/{WEB_SITE_NAME}\public;</code>），因此<code>open_basedir=$document_root/...</code>中<code>$document_root</code>指的是网站的<code>public</code>目录，而非<code>/home/wwwroot/{WEB_SITE_NAME}</code>，在读取<code>bootstrap.php</code>文件（而该文件正好位于<code>/home/wwwroot/{WEB_SITE_NAME}</code>目录下，在<code>public</code>目录上一层）时出错，受跨目录访问安全限制。</p>
 <p>主要有两种解决方案：</p>
-<p>⑴ 直接注释掉<code>fastcgi.conf</code>文件中的<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>这一行，一棒子打死了目录访问安全策略</p>
-<p>⑵ 在<code>fastcgi.conf</code>文件中，修改<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，以<code>test.com</code>为例（此域名为添加vhost时输入的域名），修改内容如下：（这样做的坏处时每次添加vhost时都需要手动添加⊙﹏⊙）</p>
-<pre><code><figure class="highlight"><figcaption><span>fastcgi.conf</span></figcaption><table><tr><td class="code"><pre><div class="line">fastcgi_param PHP_ADMIN_VALUE "open_basedir=/home/wwwroot/test.com/:/tmp/:/proc/";</div></pre></td></tr></table></figure>
-</code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<ol>
+<li><p>直接注释掉<code>fastcgi.conf</code>文件中的<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>这一行，一棒子打死了目录访问安全策略</p>
+</li>
+<li><p>在<code>fastcgi.conf</code>文件中，修改<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，以<code>test.com</code>为例（此域名为添加vhost时输入的域名），修改内容如下：（这样做的坏处时每次添加vhost时都需要手动添加⊙﹏⊙）</p>
+ <figure class="highlight"><figcaption><span>/usr/local/nginx/conf/fastcgi.conf</span></figcaption><table><tr><td class="code"><pre><div class="line">fastcgi_param PHP_ADMIN_VALUE "open_basedir=/home/wwwroot/test.com/:/tmp/:/proc/";</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://github.com/esdeathlove/ss-panel-v3-mod" target="_blank" rel="external">ss-panel-v3-mod</a></li>
 <li><a href="https://secure.php.net/manual/zh/configuration.file.per-user.php" target="_blank" rel="external">PHP中.user.ini文件</a></li>
 <li><a href="https://secure.php.net/manual/zh/install.fpm.configuration.php" target="_blank" rel="external">PHP中php-fpm.conf全局配置段</a></li>
@@ -240,14 +244,14 @@ lnmp一键安装包的版本为1.4
     <div class="content">
         
 <span class="post-time">
-    最后更新时间：<time datetime="2017-06-09T03:00:16.368Z" itemprop="dateUpdated">2017年6月9日 11:00</time>
+    最后更新时间：<time datetime="2017-06-09T03:08:50.802Z" itemprop="dateUpdated">2017年6月9日 11:08</time>
 </span><br>
 
 
-        转载请注明出处：<a href="/2017/06/09/lnmp-ss-more/" target="_blank" rel="external">http://www.smallcheck.net/2017/06/09/lnmp-ss-more/</a>
+        转载请注明出处：<a href="/2017/06/09/lnmp-ss-more/" target="_blank" rel="external">http://www.dimsolo.com/2017/06/09/lnmp-ss-more/</a>
     </div>
     <footer>
-        <a href="http://www.smallcheck.net">
+        <a href="http://www.dimsolo.com">
             <img src="/img/avatar.jpg" alt="Wayne Wang">
             Wayne Wang
         </a>
@@ -269,7 +273,7 @@ lnmp一键安装包的版本为1.4
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&pic=http://www.smallcheck.net/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&pic=http://www.dimsolo.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -279,22 +283,22 @@ lnmp一键安装包的版本为1.4
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&source=Personal blog" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&source=Personal blog" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lnmp & ss的那些事》 — Wayne's Blog&url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/&via=http://www.smallcheck.net" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lnmp & ss的那些事》 — Wayne's Blog&url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/&via=http://www.dimsolo.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -336,19 +340,13 @@ lnmp一键安装包的版本为1.4
 
 
 
-
 <section class="comments" id="comments">
-    <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
-    <script>
-        var cloudTieConfig = {
-            url: document.location.href, 
-            sourceId: "",
-            productKey: "24f86d916cf0437b8c8c4bfa1f6b9fa1",
-            target: "cloud-tie-wrapper"
-        };
-    </script>
-    <script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+    <!-- UY BEGIN -->
+    <div id="uyan_frame"></div>
+    <script type="text/javascript" src="http://v2.uyan.cc/code/uyan.js?uid=2128107"></script>
+    <!-- UY END -->
 </section>
+
 
 
 
@@ -393,7 +391,7 @@ lnmp一键安装包的版本为1.4
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&pic=http://www.smallcheck.net/img/avatar.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&pic=http://www.dimsolo.com/img/avatar.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -403,22 +401,22 @@ lnmp一键安装包的版本为1.4
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&source=Personal blog" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/&title=《lnmp & ss的那些事》 — Wayne's Blog&source=Personal blog" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
       <li>
-        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/" data-title=" Facebook">
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/" data-title=" Facebook">
           <i class="icon icon-facebook"></i>
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lnmp & ss的那些事》 — Wayne's Blog&url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/&via=http://www.smallcheck.net" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《lnmp & ss的那些事》 — Wayne's Blog&url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/&via=http://www.dimsolo.com" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
       <li>
-        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.smallcheck.net/2017/06/09/lnmp-ss-more/" data-title=" Google+">
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://www.dimsolo.com/2017/06/09/lnmp-ss-more/" data-title=" Google+">
           <i class="icon icon-google-plus"></i>
         </a>
       </li>
@@ -429,7 +427,7 @@ lnmp一键安装包的版本为1.4
 <div class="page-modal wx-share" id="wxShare">
     <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
-    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3ay46DMAwF0P7/T3fWVQVc23QkksOqapmQw8LjR16v+Hp/Xd/fH90/X+22CwMD47GM9+mV35M/pQe7eC4GBsYGjKOlk3uO7kxWThjJChgYGBhJYM2pd70+DAwMjPMwmieUeYDGwMDAOGf0NlQNx0lS+PNaHAMD44GMvFn2/59/Mt/AwMB4FONdvJKWWZIInm+0vCsMDIylGb3ELtlEvrnbEk0MDIxFGT13tfXWG38WhgoYGBibMZLt9ppl8zHn4coYGBgbMPIHV8cD1cNezREmBgbGNozeEYfkFZynkr3Q/PEZAwNjaUavid87+lBFVnkYGBhrM3ptr17w7a0frYOBgbENIzlCMTlGlo88y+0/DAyMpRmTTScF6qTczUcIGBgYOzDy9lbzgGmr6iy/XAwMjOUYd5WdecGZr988M4KBgbE0Y36cIv++FzkP18fAwFiacf7zJFlMRp7VV5bvEAMDYz1GHtqSDfWOhU0SUAwMjN0YhXNkxYZdNdWrHu/AwMDYmdHbRA+QJ4vlgIuBgbEEIy8jq6VptZWWhPXDIhYDA2M5xuTYxLy5Vi10Cz1CDAyMhRiTMJcE1skgoXp0AwMDY21Gr91f/dvk11HAxcDA2ICRlJ29IWWSVub/AS7yXAwMDIw4gOabzpt9F1ktBgYGRhAQJyljNchezDcwMDAWZUxKzV54rbbzbmu3YWBgPJBRLR3z1lgy4My3eMNQEwMD43mMPxzaQc8B6iJNAAAAAElFTkSuQmCC" alt="微信分享二维码">
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACMklEQVR42u3aQY6DQAxEUe5/aUaaVSQE+WVDlLh/r6IMgjwWNXa7tw2v/X+9fn795nhl+tf9sLYnlgwZMn6WsV+uI6N2T/JSzp57fY0MGTLWYZCQTeOVh+nZs8j1MmTIkMEDNP0ppOiUIUOGjFrgkgKOl561klSGDBlrMngziW5aiu8P9eIyZMj4QUZtMPCZz4/PN2TIkPH1jP3W1ZkttopIGTJkjGbwzf3+OQcysORbeFttRiFDhowRDL6V9sRRjHSccBq4MmTIGMdIL0q33mqbZf0NPhkyZExipM1kbQDQCdzr+8iQIWM2Ix0l1uKV/6ziPWXIkDGawWPuTWaXmsza0Yo3gwEZMmSMY6Agw6R0+4wA0FadDBkyFmDwhjMNXILk5SnqwmXIkDGaEU8PQLubbqgVx58yZMhYgJEGYu0AWa3pRVQZMmSMZpAGNb3y3qNdwYuTIUPGaAYv9dL2NQ3ufqzLkCFjNca9W/m1kE2HDTJkyJjKCIaFjWC9q6xEZ0ZkyJAxlEGKwtpIgI8f+AA1+F8hQ4aMQQwSfGml2XkRMUaGDBmjGWhA2CjdOqEcDydkyJAxjtFpO9Nv+AHZ9BXIkCFjNiOdCdbCN21QeQEqQ4aMdRgkZHlJx4eUfDgqQ4YMGWlc1vKbjxyK23MyZMiQgY9W1Lb4SStb3C+UIUPGYow0djt3jseiMmTIWIBBApQ3qPxYWDp+2NIHy5AhYwSjMxioNbdpWRkUiDJkyJjG+AOmc7wqbXcdxAAAAABJRU5ErkJggg==" alt="微信分享二维码">
 </div>
 
 

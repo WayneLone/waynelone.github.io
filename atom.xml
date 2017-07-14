@@ -4,9 +4,9 @@
   <subtitle>Do it, do better!</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://www.smallcheck.net/"/>
-  <updated>2017-06-09T03:00:16.368Z</updated>
-  <id>http://www.smallcheck.net/</id>
+  <link href="http://www.dimsolo.com/"/>
+  <updated>2017-06-09T03:08:50.802Z</updated>
+  <id>http://www.dimsolo.com/</id>
   
   <author>
     <name>Wayne Wang</name>
@@ -17,10 +17,10 @@
   
   <entry>
     <title>lnmp &amp; ss的那些事</title>
-    <link href="http://www.smallcheck.net/2017/06/09/lnmp-ss-more/"/>
-    <id>http://www.smallcheck.net/2017/06/09/lnmp-ss-more/</id>
+    <link href="http://www.dimsolo.com/2017/06/09/lnmp-ss-more/"/>
+    <id>http://www.dimsolo.com/2017/06/09/lnmp-ss-more/</id>
     <published>2017-06-09T00:21:00.000Z</published>
-    <updated>2017-06-09T03:00:16.368Z</updated>
+    <updated>2017-06-09T03:08:50.802Z</updated>
     
     <content type="html"><![CDATA[<p>最近阿里云在频繁的搞活动，于是又入手了一台新加坡主机（控制不住我自己啊::&gt;_&lt;::），接着又走了一遍<a href="https://github.com/esdeathlove/ss-panel-v3-mod" target="_blank" rel="external">ss-panel-v3-mod</a>的搭建。这次感触颇深，主要原因是因为自己太追“潮流”引起的</p>
 <h2 id="部署环境概述"><a href="#部署环境概述" class="headerlink" title="部署环境概述"></a>部署环境概述</h2><ol>
@@ -45,12 +45,16 @@
 <blockquote>
 <p><code>lnmp1.4</code>一键安装对其配置是存在于<code>/usr/local/nginx/conf/fastcgi.conf</code>文件<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，个人感觉这个设计有点别扭，这个配置对所有站点都写死了不灵活。</p>
 </blockquote>
-<p>对于详细错误的解释：由于我们在站点配置文件（<code>/usr/local/nginx/conf/vhost/{WEB_SITE}.conf</code>），网站根目录配置<code>root  /home/wwwroot/{WEB_SITE_NAME};</code>这一行进行修改（修改成了<code>root  /home/wwwroot/{WEB_SITE_NAME}\public;</code>），因此<code>open_basedir=$document_root/...</code>中<code>$document_root</code>指的是网站的<code>public</code>目录，而非<code>/home/wwwroot/{WEB_SITE_NAME}</code>，因此在读取<code>bootstrap.php</code>文件（而该文件正好位于<code>/home/wwwroot/{WEB_SITE_NAME}</code>目录下，在<code>public</code>目录上一层）时出错，受跨目录访问安全限制。</p>
+<p>对于详细错误的解释：由于我们在站点配置文件（<code>/usr/local/nginx/conf/vhost/{WEB_SITE}.conf</code>），网站根目录配置<code>root  /home/wwwroot/{WEB_SITE_NAME};</code>这一行进行修改（修改成了<code>root  /home/wwwroot/{WEB_SITE_NAME}\public;</code>），因此<code>open_basedir=$document_root/...</code>中<code>$document_root</code>指的是网站的<code>public</code>目录，而非<code>/home/wwwroot/{WEB_SITE_NAME}</code>，在读取<code>bootstrap.php</code>文件（而该文件正好位于<code>/home/wwwroot/{WEB_SITE_NAME}</code>目录下，在<code>public</code>目录上一层）时出错，受跨目录访问安全限制。</p>
 <p>主要有两种解决方案：</p>
-<p>⑴ 直接注释掉<code>fastcgi.conf</code>文件中的<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>这一行，一棒子打死了目录访问安全策略</p>
-<p>⑵ 在<code>fastcgi.conf</code>文件中，修改<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，以<code>test.com</code>为例（此域名为添加vhost时输入的域名），修改内容如下：（这样做的坏处时每次添加vhost时都需要手动添加⊙﹏⊙）</p>
-<pre><code><figure class="highlight"><figcaption><span>fastcgi.conf</span></figcaption><table><tr><td class="code"><pre><div class="line">fastcgi_param PHP_ADMIN_VALUE "open_basedir=/home/wwwroot/test.com/:/tmp/:/proc/";</div></pre></td></tr></table></figure>
-</code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<ol>
+<li><p>直接注释掉<code>fastcgi.conf</code>文件中的<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>这一行，一棒子打死了目录访问安全策略</p>
+</li>
+<li><p>在<code>fastcgi.conf</code>文件中，修改<code>fastcgi_param PHP_ADMIN_VALUE &quot;open_basedir=$document_root/:/tmp/:/proc/&quot;;</code>，以<code>test.com</code>为例（此域名为添加vhost时输入的域名），修改内容如下：（这样做的坏处时每次添加vhost时都需要手动添加⊙﹏⊙）</p>
+ <figure class="highlight"><figcaption><span>/usr/local/nginx/conf/fastcgi.conf</span></figcaption><table><tr><td class="code"><pre><div class="line">fastcgi_param PHP_ADMIN_VALUE "open_basedir=/home/wwwroot/test.com/:/tmp/:/proc/";</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
 <li><a href="https://github.com/esdeathlove/ss-panel-v3-mod" target="_blank" rel="external">ss-panel-v3-mod</a></li>
 <li><a href="https://secure.php.net/manual/zh/configuration.file.per-user.php" target="_blank" rel="external">PHP中.user.ini文件</a></li>
 <li><a href="https://secure.php.net/manual/zh/install.fpm.configuration.php" target="_blank" rel="external">PHP中php-fpm.conf全局配置段</a></li>
@@ -67,16 +71,16 @@
     </summary>
     
     
-      <category term="ss-panel-v3-mod" scheme="http://www.smallcheck.net/tags/ss-panel-v3-mod/"/>
+      <category term="ss-panel-v3-mod" scheme="http://www.dimsolo.com/tags/ss-panel-v3-mod/"/>
     
-      <category term="lnmp" scheme="http://www.smallcheck.net/tags/lnmp/"/>
+      <category term="lnmp" scheme="http://www.dimsolo.com/tags/lnmp/"/>
     
   </entry>
   
   <entry>
     <title>VS Code搭建AngularJs 1.x开发环境</title>
-    <link href="http://www.smallcheck.net/2017/03/22/vscode-angular/"/>
-    <id>http://www.smallcheck.net/2017/03/22/vscode-angular/</id>
+    <link href="http://www.dimsolo.com/2017/03/22/vscode-angular/"/>
+    <id>http://www.dimsolo.com/2017/03/22/vscode-angular/</id>
     <published>2017-03-22T10:50:11.000Z</published>
     <updated>2017-06-02T05:05:01.862Z</updated>
     
@@ -104,16 +108,16 @@
     </summary>
     
     
-      <category term="vscode" scheme="http://www.smallcheck.net/tags/vscode/"/>
+      <category term="vscode" scheme="http://www.dimsolo.com/tags/vscode/"/>
     
-      <category term="angularjs" scheme="http://www.smallcheck.net/tags/angularjs/"/>
+      <category term="angularjs" scheme="http://www.dimsolo.com/tags/angularjs/"/>
     
   </entry>
   
   <entry>
     <title>搭建ss-panel-v3-mod环境小记</title>
-    <link href="http://www.smallcheck.net/2017/03/21/build-ss/"/>
-    <id>http://www.smallcheck.net/2017/03/21/build-ss/</id>
+    <link href="http://www.dimsolo.com/2017/03/21/build-ss/"/>
+    <id>http://www.dimsolo.com/2017/03/21/build-ss/</id>
     <published>2017-03-21T09:53:01.000Z</published>
     <updated>2017-06-09T00:18:39.295Z</updated>
     
@@ -297,11 +301,11 @@
     </summary>
     
     
-      <category term="ss-panel-v3-mod" scheme="http://www.smallcheck.net/tags/ss-panel-v3-mod/"/>
+      <category term="ss-panel-v3-mod" scheme="http://www.dimsolo.com/tags/ss-panel-v3-mod/"/>
     
-      <category term="CentOS" scheme="http://www.smallcheck.net/tags/CentOS/"/>
+      <category term="lnmp" scheme="http://www.dimsolo.com/tags/lnmp/"/>
     
-      <category term="lnmp" scheme="http://www.smallcheck.net/tags/lnmp/"/>
+      <category term="CentOS" scheme="http://www.dimsolo.com/tags/CentOS/"/>
     
   </entry>
   
