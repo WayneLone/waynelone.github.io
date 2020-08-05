@@ -1,0 +1,247 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>II. SQL 语言 &mdash; pgsql-doc 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="4. SQL 语法" href="syntax/sql-syntax.html" />
+    <link rel="prev" title="2.3. 删除" href="../tutorial/sql/tutorial-delete.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> pgsql-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface/preface.html">前言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/tutorial.html">I. 教程</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">II. SQL 语言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="syntax/sql-syntax.html">4. SQL 语法</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/reference.html">VI. 参考</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pgsql-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>II. SQL 语言</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="ii-sql">
+<h1>II. SQL 语言<a class="headerlink" href="#ii-sql" title="永久链接至标题">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">目录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="syntax/sql-syntax.html">4. SQL 语法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="syntax/sql-syntax-lexical.html">4.1. 词法结构</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="syntax/sql-syntax-lexical.html#id2">4.1.1. 标识符和关键词</a></li>
+<li class="toctree-l3"><a class="reference internal" href="syntax/sql-syntax-lexical.html#id3">4.1.2. 常量</a></li>
+<li class="toctree-l3"><a class="reference internal" href="syntax/sql-syntax-lexical.html#id4">4.1.3. 操作符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="syntax/sql-syntax-lexical.html#id5">4.1.4. 特殊字符</a></li>
+<li class="toctree-l3"><a class="reference internal" href="syntax/sql-syntax-lexical.html#id6">4.1.5. 注释</a></li>
+<li class="toctree-l3"><a class="reference internal" href="syntax/sql-syntax-lexical.html#id7">4.1.6. 操作符优先级</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="syntax/sql-expressions.html">4.2. 值表达式</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>这部份描述在 PostgreSQL 中 SQL 语言的使用。我们从描述 SQL 的一般语法开始，
+然后解释如何创建保存数据的结构、如何填充数据库以及如何查询它。
+中间的部分列出了在 SQL 命令中可用的数据类型和函数。剩余的部分则留给对于调优数据性能的重要方面。</p>
+<p>这部份的信息被组织成让一个新用户可以从头到尾跟随它来全面理解主题，而不需要多次参考后面的内容。这些章都是自包含的，
+这样高级用户可以根据他们的选择阅读单独的章。这一部分的信息被以一种叙事的风格展现。
+需要查看一个特定命令的完整描述的读者应该去看看 <a class="reference internal" href="../reference/reference.html"><span class="doc">VI. 参考</span></a>。</p>
+<p>这一部分的阅读者应该知道如何连接到一个 PostgreSQL 数据库并且发出 SQL 命令。
+我们鼓励不熟悉这些问题的读者先去阅读 <a class="reference internal" href="../tutorial/tutorial.html"><span class="doc">I. 教程</span></a>。
+SQL 通常使用 PostgreSQL 的交互式终端 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 输入，但是其他具有相似功能的程序也可以被使用。</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="syntax/sql-syntax.html" class="btn btn-neutral float-right" title="4. SQL 语法" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../tutorial/sql/tutorial-delete.html" class="btn btn-neutral float-left" title="2.3. 删除" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> 上一页</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2019, Wayne Wang
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="http://sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

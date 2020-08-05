@@ -1,0 +1,265 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.3. 在表中增加行 &mdash; pgsql-doc 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="2.3. 查询一个表" href="tutorial-select.html" />
+    <link rel="prev" title="2.3. 创建一个新表" href="tutorial-table.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> pgsql-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">I. 教程</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../start/tutorial-start.html">1. 从零开始</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tutorial-sql.html">2. SQL 语言</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tutorial-sql-intro.html">2.1 引言</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-concepts.html">2.2. 概念</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-table.html">2.3. 创建一个新表</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.3. 在表中增加行</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-select.html">2.3. 查询一个表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-join.html">2.3. 在表之间连接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-agg.html">2.3. 聚合函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-update.html">2.3. 更新</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-delete.html">2.3. 删除</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sqlang/sql.html">II. SQL 语言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/reference.html">VI. 参考</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pgsql-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorial.html">I. 教程</a> &raquo;</li>
+        
+          <li><a href="tutorial-sql.html">2. SQL 语言</a> &raquo;</li>
+        
+      <li>2.3. 在表中增加行</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>2.3. 在表中增加行<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p><code class="docutils literal notranslate"><span class="pre">INSERT</span></code> 语句用于向表中添加行：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">weather</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;1994-11-27&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>请注意所有数据类型都使用了相当明了的输入格式。那些不是简单数字值的常量通常必需用单引号（’）包围，就象在例子里一样。
+<code class="docutils literal notranslate"><span class="pre">date</span></code> 类型实际上对可接收的格式相当灵活，不过在本教程里，我们应该坚持使用这种清晰的格式。</p>
+<p><code class="docutils literal notranslate"><span class="pre">point</span></code> 类型要求一个座标对作为输入，如下：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">cities</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="s1">&#39;(-194.0, 53.0)&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>到目前为止使用的语法要求你记住列的顺序。一个可选的语法允许你明确地列出列：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">weather</span> <span class="p">(</span><span class="n">city</span><span class="p">,</span> <span class="n">temp_lo</span><span class="p">,</span> <span class="n">temp_hi</span><span class="p">,</span> <span class="n">prcp</span><span class="p">,</span> <span class="nb">date</span><span class="p">)</span>
+   <span class="k">VALUES</span> <span class="p">(</span><span class="s1">&#39;San Francisco&#39;</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">57</span><span class="p">,</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;1994-11-29&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>如果你需要，你可以用另外一个顺序列出列或者是忽略某些列， 比如说，我们不知道降水量：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">weather</span> <span class="p">(</span><span class="nb">date</span><span class="p">,</span> <span class="n">city</span><span class="p">,</span> <span class="n">temp_hi</span><span class="p">,</span> <span class="n">temp_lo</span><span class="p">)</span>
+   <span class="k">VALUES</span> <span class="p">(</span><span class="s1">&#39;1994-11-29&#39;</span><span class="p">,</span> <span class="s1">&#39;Hayward&#39;</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">37</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>许多开发人员认为明确列出列要比依赖隐含的顺序是更好的风格。</p>
+<p>请输入上面显示的所有命令，这样你在随后的各节中才有可用的数据。</p>
+<p>你还可以使用 <code class="docutils literal notranslate"><span class="pre">COPY</span></code> 从文本文件中装载大量数据。这种方式通常更快，
+因为 <code class="docutils literal notranslate"><span class="pre">COPY</span></code> 命令就是为这类应用优化的，只是比 <code class="docutils literal notranslate"><span class="pre">INSERT</span></code> 少一些灵活性。比如：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">COPY</span> <span class="n">weather</span> <span class="k">FROM</span> <span class="s1">&#39;/home/user/weather.txt&#39;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这里源文件的文件名必须在运行后端进程的机器上是可用的，而不是在客户端上，因为后端进程将直接读取该文件。
+你可以在 <a class="reference internal" href="../../reference/commands/sql-copy.html"><span class="doc">COPY</span></a> 中读到更多有关 <code class="docutils literal notranslate"><span class="pre">COPY</span></code> 命令的信息。</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial-select.html" class="btn btn-neutral float-right" title="2.3. 查询一个表" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial-table.html" class="btn btn-neutral float-left" title="2.3. 创建一个新表" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> 上一页</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2019, Wayne Wang
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="http://sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

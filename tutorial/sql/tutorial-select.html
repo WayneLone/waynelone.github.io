@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>2.3. 查询一个表 &mdash; pgsql-doc 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="2.3. 在表之间连接" href="tutorial-join.html" />
+    <link rel="prev" title="2.3. 在表中增加行" href="tutorial-populate.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> pgsql-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">I. 教程</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../start/tutorial-start.html">1. 从零开始</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tutorial-sql.html">2. SQL 语言</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tutorial-sql-intro.html">2.1 引言</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-concepts.html">2.2. 概念</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-table.html">2.3. 创建一个新表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-populate.html">2.3. 在表中增加行</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">2.3. 查询一个表</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-join.html">2.3. 在表之间连接</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-agg.html">2.3. 聚合函数</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-update.html">2.3. 更新</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-delete.html">2.3. 删除</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sqlang/sql.html">II. SQL 语言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/reference.html">VI. 参考</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pgsql-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorial.html">I. 教程</a> &raquo;</li>
+        
+          <li><a href="tutorial-sql.html">2. SQL 语言</a> &raquo;</li>
+        
+      <li>2.3. 查询一个表</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>2.3. 查询一个表<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>要从一个表中检索数据就是查询这个表。SQL 的 <code class="docutils literal notranslate"><span class="pre">SELECT</span></code> 语句就是做这个用途的。
+该语句分为选择列表（列出要返回的列）、表列表（列出从中检索数据的表）以及可选的条件（指定任意的限制）。
+比如，要检索表 <code class="docutils literal notranslate"><span class="pre">weather</span></code> 的所有行，键入：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">weather</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这里 <code class="docutils literal notranslate"><span class="pre">*</span></code> 是 “所有列” 的缩写。<a class="footnote-reference brackets" href="#id4" id="id2">2</a> 因此相同的结果应该这样获得：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">city</span><span class="p">,</span> <span class="n">temp_lo</span><span class="p">,</span> <span class="n">temp_hi</span><span class="p">,</span> <span class="n">prcp</span><span class="p">,</span> <span class="nb">date</span> <span class="k">FROM</span> <span class="n">weather</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>而输出应该是：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">city</span>     <span class="o">|</span> <span class="n">temp_lo</span> <span class="o">|</span> <span class="n">temp_hi</span> <span class="o">|</span> <span class="n">prcp</span> <span class="o">|</span>    <span class="n">date</span>
+<span class="o">--------------+---------+---------+------+------------</span>
+<span class="n">San</span> <span class="n">Francisco</span> <span class="o">|</span>      <span class="mi">46</span> <span class="o">|</span>      <span class="mi">50</span> <span class="o">|</span> <span class="mf">0.25</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">27</span>
+<span class="n">San</span> <span class="n">Francisco</span> <span class="o">|</span>      <span class="mi">43</span> <span class="o">|</span>      <span class="mi">57</span> <span class="o">|</span>    <span class="mi">0</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">29</span>
+<span class="n">Hayward</span>       <span class="o">|</span>      <span class="mi">37</span> <span class="o">|</span>      <span class="mi">54</span> <span class="o">|</span>      <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">29</span>
+<span class="p">(</span><span class="mi">3</span> <span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>你可以在选择列表中写任意表达式，而不仅仅是列的列表。比如，你可以：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="n">city</span><span class="p">,</span> <span class="p">(</span><span class="n">temp_hi</span><span class="o">+</span><span class="n">temp_lo</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="k">AS</span> <span class="n">temp_avg</span><span class="p">,</span> <span class="nb">date</span> <span class="k">FROM</span> <span class="n">weather</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>这样应该得到：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">city</span>     <span class="o">|</span> <span class="n">temp_avg</span> <span class="o">|</span>    <span class="n">date</span>
+<span class="o">--------------+----------+------------</span>
+<span class="n">San</span> <span class="n">Francisco</span> <span class="o">|</span>       <span class="mi">48</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">27</span>
+<span class="n">San</span> <span class="n">Francisco</span> <span class="o">|</span>       <span class="mi">50</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">29</span>
+<span class="n">Hayward</span>       <span class="o">|</span>       <span class="mi">45</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">29</span>
+<span class="p">(</span><span class="mi">3</span> <span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>请注意这里的 <code class="docutils literal notranslate"><span class="pre">AS</span></code> 子句是如何给输出列重新命名的（<code class="docutils literal notranslate"><span class="pre">AS</span></code> 子句是可选的）。</p>
+<p>一个查询可以使用 <code class="docutils literal notranslate"><span class="pre">WHERE</span></code> 子句“修饰”，它指定需要哪些行。WHERE子句包含一个布尔（真值）表达式，只有那些使布尔表达式为真的行才会被返回。
+在条件中可以使用常用的布尔操作符（<code class="docutils literal notranslate"><span class="pre">AND</span></code>、<code class="docutils literal notranslate"><span class="pre">OR`</span> <span class="pre">`和</span> <span class="pre">``NOT</span></code>）。 比如，下面的查询检索旧金山的下雨天的天气：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">weather</span>
+    <span class="k">WHERE</span> <span class="n">city</span> <span class="o">=</span> <span class="s1">&#39;San Francisco&#39;</span> <span class="k">AND</span> <span class="n">prcp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>结果：</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">city</span>      <span class="o">|</span> <span class="n">temp_lo</span> <span class="o">|</span> <span class="n">temp_hi</span> <span class="o">|</span> <span class="n">prcp</span> <span class="o">|</span>    <span class="n">date</span>
+<span class="o">---------------+---------+---------+------+------------</span>
+ <span class="n">San</span> <span class="n">Francisco</span> <span class="o">|</span>      <span class="mi">46</span> <span class="o">|</span>      <span class="mi">50</span> <span class="o">|</span> <span class="mf">0.25</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">27</span>
+<span class="p">(</span><span class="mi">1</span> <span class="n">row</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>你可以要求返回的查询结果是排好序的：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">weather</span>
+    <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">city</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">city</span>      <span class="o">|</span> <span class="n">temp_lo</span> <span class="o">|</span> <span class="n">temp_hi</span> <span class="o">|</span> <span class="n">prcp</span> <span class="o">|</span>    <span class="n">date</span>
+<span class="o">---------------+---------+---------+------+------------</span>
+ <span class="n">Hayward</span>       <span class="o">|</span>      <span class="mi">37</span> <span class="o">|</span>      <span class="mi">54</span> <span class="o">|</span>      <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">29</span>
+ <span class="n">San</span> <span class="n">Francisco</span> <span class="o">|</span>      <span class="mi">43</span> <span class="o">|</span>      <span class="mi">57</span> <span class="o">|</span>    <span class="mi">0</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">29</span>
+ <span class="n">San</span> <span class="n">Francisco</span> <span class="o">|</span>      <span class="mi">46</span> <span class="o">|</span>      <span class="mi">50</span> <span class="o">|</span> <span class="mf">0.25</span> <span class="o">|</span> <span class="mi">1994</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">27</span>
+</pre></div>
+</div>
+<p>在这个例子里，排序的顺序并未完全被指定，因此你可能看到属于旧金山的行被随机地排序。但是如果你使用下面的语句，那么就总是会得到上面的结果：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">weather</span>
+    <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">city</span><span class="p">,</span> <span class="n">temp_lo</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>你可以要求在查询的结果中消除重复的行：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">city</span>
+    <span class="k">FROM</span> <span class="n">weather</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>  <span class="n">city</span>
+<span class="o">---------------</span>
+ <span class="n">Hayward</span>
+ <span class="n">San</span> <span class="n">Francisco</span>
+<span class="p">(</span><span class="mi">2</span> <span class="n">rows</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>再次声明，结果行的顺序可能变化。你可以组合使用DISTINCT和ORDER BY来保证获取一致的结果：<a class="footnote-reference brackets" href="#id5" id="id3">3</a></p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SELECT</span> <span class="k">DISTINCT</span> <span class="n">city</span>
+     <span class="k">FROM</span> <span class="n">weather</span>
+     <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">city</span><span class="p">;</span>
+</pre></div>
+</div>
+<p class="rubric">Footnotes</p>
+<dl class="footnote brackets">
+<dt class="label" id="id4"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>虽然 <code class="docutils literal notranslate"><span class="pre">SELECT</span> <span class="pre">*</span></code> 对于即席查询很有用，但我们普遍认为在生产代码中这是很糟糕的风格，因为给表增加一个列就改变了结果。</p>
+</dd>
+<dt class="label" id="id5"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
+<dd><p>在一些数据库系统里，包括老版本的 PostgreSQL，<code class="docutils literal notranslate"><span class="pre">DISTINCT</span></code> 的实现自动对行进行排序，因此 <code class="docutils literal notranslate"><span class="pre">ORDER</span> <span class="pre">BY</span></code> 是多余的。
+但是这一点并不是 SQL 标准的要求，并且目前的 PostgreSQL 并不保证 <code class="docutils literal notranslate"><span class="pre">DISTINCT</span></code> 会导致行被排序。</p>
+</dd>
+</dl>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorial-join.html" class="btn btn-neutral float-right" title="2.3. 在表之间连接" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial-populate.html" class="btn btn-neutral float-left" title="2.3. 在表中增加行" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> 上一页</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2019, Wayne Wang
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="http://sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

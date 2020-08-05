@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>1.1 访问数据库 &mdash; pgsql-doc 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+        <script src="../../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../../genindex.html" />
+    <link rel="search" title="搜索" href="../../search.html" />
+    <link rel="next" title="2. SQL 语言" href="../sql/tutorial-sql.html" />
+    <link rel="prev" title="1.1 创建一个数据库" href="tutorial-createdb.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> pgsql-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../preface/preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">I. 教程</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="tutorial-start.html">1. 从零开始</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="tutorial-install.html">1.1 安装</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-arch.html">1.1 架构基础</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tutorial-createdb.html">1.1 创建一个数据库</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">1.1 访问数据库</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../sql/tutorial-sql.html">2. SQL 语言</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../sqlang/sql.html">II. SQL 语言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../reference/reference.html">VI. 参考</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pgsql-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../tutorial.html">I. 教程</a> &raquo;</li>
+        
+          <li><a href="tutorial-start.html">1. 从零开始</a> &raquo;</li>
+        
+      <li>1.1 访问数据库</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>1.1 访问数据库<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<p>一旦你创建了数据库，你就可以通过以下方式访问它：</p>
+<p>运行 PostgreSQL 的交互式终端程序，它被称为 <code class="docutils literal notranslate"><span class="pre">psql</span></code>， 它允许你交互地输入、编辑和执行 SQL 命令。</p>
+<p>使用一种已有的图形化前端工具，比如 <code class="docutils literal notranslate"><span class="pre">pgAdmin</span></code> 或者带 <code class="docutils literal notranslate"><span class="pre">ODBC</span></code> 或 <code class="docutils literal notranslate"><span class="pre">JDBC</span></code> 支持的办公套件来创建和管理数据库。
+这种方法在这份教程中没有介绍。</p>
+<p>使用多种绑定发行的语言中的一种写一个自定义的应用。这些可能性在 Part IV 中将有更深入的讨论。</p>
+<p>你可能需要启动 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 来试验本教程中的例子。 你可以用下面的命令为 <code class="docutils literal notranslate"><span class="pre">mydb</span></code> 数据库激活它：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ psql mydb
+</pre></div>
+</div>
+<p>如果你不提供数据库名字，那么它的缺省值就是你的用户账号名字。在前面使用 createdb 的小节里你应该已经了解了这种方式。</p>
+<p>在 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 中，你将看到下面的欢迎信息：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>psql <span class="o">(</span><span class="m">11</span>.2<span class="o">)</span>
+Type <span class="s2">&quot;help&quot;</span> <span class="k">for</span> help.
+
+<span class="nv">mydb</span><span class="o">=</span>&gt;
+</pre></div>
+</div>
+<p>最后一行也可能是：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">mydb</span><span class="o">=</span><span class="c1">#</span>
+</pre></div>
+</div>
+<p>这个提示符意味着你是数据库超级用户，最可能出现在你自己安装了 PostgreSQL 实例的情况下。
+作为超级用户意味着你不受访问控制的限制。对于本教程的目的而言， 是否超级用户并不重要。</p>
+<p>如果你启动 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 时碰到了问题，那么请回到前面的小节。诊断 <code class="docutils literal notranslate"><span class="pre">createdb</span></code> 的方法和诊断 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 的方法很类似，
+如果前者能运行那么后者也应该能运行。</p>
+<p><code class="docutils literal notranslate"><span class="pre">psql</span></code> 打印出的最后一行是提示符，它表示 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 正听着你说话，
+这个时候你就可以敲入 SQL 查询到一个 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 维护的工作区中。试验一下下面的命令：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">mydb</span><span class="o">=</span>&gt; SELECT version<span class="o">()</span><span class="p">;</span>
+                                      version
+------------------------------------------------------------------------------------------
+PostgreSQL <span class="m">11</span>.2 on x86_64-pc-linux-gnu, compiled by gcc <span class="o">(</span>Debian <span class="m">4</span>.9.2-10<span class="o">)</span> <span class="m">4</span>.9.2, <span class="m">64</span>-bit
+<span class="o">(</span><span class="m">1</span> row<span class="o">)</span>
+
+<span class="nv">mydb</span><span class="o">=</span>&gt; SELECT current_date<span class="p">;</span>
+    date
+------------
+<span class="m">2016</span>-01-07
+<span class="o">(</span><span class="m">1</span> row<span class="o">)</span>
+
+<span class="nv">mydb</span><span class="o">=</span>&gt; SELECT <span class="m">2</span> + <span class="m">2</span><span class="p">;</span>
+ ?column?
+----------
+        <span class="m">4</span>
+<span class="o">(</span><span class="m">1</span> row<span class="o">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">psql</span></code> 程序有一些不属于 SQL 命令的内部命令。它们以反斜线开头 <code class="docutils literal notranslate"><span class="pre">\</span></code>。 欢迎信息中列出了一些这种命令。
+比如，你可以用下面的命令获取各种 PostgreSQL 的 SQL 命令的帮助语法：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">mydb</span><span class="o">=</span>&gt; <span class="se">\h</span>
+</pre></div>
+</div>
+<p>要退出psql，输入：</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="nv">mydb</span><span class="o">=</span>&gt; <span class="se">\q</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">psql</span></code> 将会退出并且让你返回到命令行 shell。（要获取更多有关内部命令的信息，你可以在 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 提示符上键入 <code class="docutils literal notranslate"><span class="pre">\?</span></code>）
+<code class="docutils literal notranslate"><span class="pre">psql</span></code> 的完整功能在 <code class="docutils literal notranslate"><span class="pre">psql</span></code> 中有文档说明。在这份文档里，我们将不会明确使用这些特性，但是你自己可以在需要的时候使用它们。</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../sql/tutorial-sql.html" class="btn btn-neutral float-right" title="2. SQL 语言" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tutorial-createdb.html" class="btn btn-neutral float-left" title="1.1 创建一个数据库" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> 上一页</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2019, Wayne Wang
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="http://sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>前言 &mdash; pgsql-doc 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1. 何为PostgreSQL？" href="intro-whatis.html" />
+    <link rel="prev" title="PostgreSQL 11.2 Document" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> pgsql-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">前言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="intro-whatis.html">1. 何为PostgreSQL？</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html">2. PostgreSQL 简史</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notation.html">3. 约定</a></li>
+<li class="toctree-l2"><a class="reference internal" href="resources.html">4. 更多信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bug-reporting.html">5. 缺陷报告指南</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/tutorial.html">I. 教程</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlang/sql.html">II. SQL 语言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/reference.html">VI. 参考</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pgsql-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>前言</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="id1">
+<h1>前言<a class="headerlink" href="#id1" title="永久链接至标题">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">目录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="intro-whatis.html">1. 何为PostgreSQL？</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">2. PostgreSQL 简史</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="history.html#postgres">2.1. 伯克利的 POSTGRES 项目</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#postgres95">2.2. Postgres95</a></li>
+<li class="toctree-l2"><a class="reference internal" href="history.html#id1">2.3. PostgreSQL</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notation.html">3. 约定</a></li>
+<li class="toctree-l1"><a class="reference internal" href="resources.html">4. 更多信息</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bug-reporting.html">5. 缺陷报告指南</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bug-reporting.html#id2">5.1. 标识缺陷</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bug-reporting.html#id3">5.2. 报告什么</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bug-reporting.html#id4">5.3 向哪里报告缺陷</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>本书是 PostgreSQL 的官方文档。 它是 PostgreSQL 开发人员和其它志愿者与 PostgreSQL 的开发并行编写的。
+它描述了当前版本的 PostgreSQL 官方支持的所有功能。</p>
+<p>为了能够管理有关 PostgreSQL 的大量信息，本书被组织成了几个部分。每个部分都是针对不同层次的用户，
+或者说针对具有不同阶段 PostgreSQL 体验的用户：</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="../tutorial/tutorial.html"><span class="doc">I. 教程</span></a> 是一个给新用户的非正式介绍。</p></li>
+<li><p><a class="reference internal" href="../sqlang/sql.html"><span class="doc">II. SQL 语言</span></a> 记载了 SQL 查询语言环境， 包括数据类型和函数，以及用户级别的性能调优。
+每个 PostgreSQL 用户都应该阅读这些内容。</p></li>
+<li><p>Part III 描述服务器的安装和管理。每个运行 PostgreSQL 服务器的人，不管是个人使用还是为别人维护，都应该阅读这部分内容。</p></li>
+<li><p>Part IV 描述 PostgreSQL 客户端程序的编程接口。</p></li>
+<li><p>Part V 包含为高级用户准备的信息， 比如服务器的扩展能力等。其中的内容包括用户定义数据类型和函数等。</p></li>
+<li><p><a class="reference internal" href="../reference/reference.html"><span class="doc">VI. 参考</span></a> 包含有关 SQL 命令、客户端和服务器程序的参考信息。
+这部分以按照命令或程序排序的结构化信息支持其它部分。</p></li>
+<li><p>Part VII 包含可用于 PostgreSQL 开发人员的各类信息。</p></li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="intro-whatis.html" class="btn btn-neutral float-right" title="1. 何为PostgreSQL？" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral float-left" title="PostgreSQL 11.2 Document" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> 上一页</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2019, Wayne Wang
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="http://sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

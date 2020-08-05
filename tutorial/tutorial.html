@@ -1,0 +1,252 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="zh-CN" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>I. 教程 &mdash; pgsql-doc 1.0 文档</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="搜索" href="../search.html" />
+    <link rel="next" title="1. 从零开始" href="start/tutorial-start.html" />
+    <link rel="prev" title="5. 缺陷报告指南" href="../preface/bug-reporting.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home" alt="Documentation Home"> pgsql-doc
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="在文档中搜索" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">目录</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../preface/preface.html">前言</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">I. 教程</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="start/tutorial-start.html">1. 从零开始</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-sql.html">2. SQL 语言</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlang/sql.html">II. SQL 语言</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../reference/reference.html">VI. 参考</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pgsql-doc</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>I. 教程</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="i">
+<h1>I. 教程<a class="headerlink" href="#i" title="永久链接至标题">¶</a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption"><span class="caption-text">目录</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="start/tutorial-start.html">1. 从零开始</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="start/tutorial-install.html">1.1 安装</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start/tutorial-arch.html">1.1 架构基础</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start/tutorial-createdb.html">1.1 创建一个数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="start/tutorial-accessdb.html">1.1 访问数据库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="sql/tutorial-sql.html">2. SQL 语言</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-sql-intro.html">2.1 引言</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-concepts.html">2.2. 概念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-table.html">2.3. 创建一个新表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-populate.html">2.3. 在表中增加行</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-select.html">2.3. 查询一个表</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-join.html">2.3. 在表之间连接</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-agg.html">2.3. 聚合函数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-update.html">2.3. 更新</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sql/tutorial-delete.html">2.3. 删除</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>欢迎来到 PostgreSQL 教程。下面的几章将为那些新接触 PostgreSQL、关系数据库概念和 SQL 语言的读者给出一个简单介绍。
+我们只假定读者拥有关于如何使用计算机的一般知识。读者不需要特殊的 Unix 或编程经验。
+这一部分主要希望给你一些关于 PostgreSQL 系统的重要方面的手把手的体验。
+我们并不准备把它写成一份能覆盖这些主题所有内容的文档。</p>
+<p>当你完成了这份教程之后，你可能希望继续去阅读 <a class="reference internal" href="../sqlang/sql.html"><span class="doc">II. SQL 语言</span></a> 来得到 SQL 语言更正式的知识，
+或者阅读 Part IV 来了解如何开发 PostgreSQL 应用程序。
+希望搭建并且管理自己的服务器的用户还应该阅读 Part III。</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="start/tutorial-start.html" class="btn btn-neutral float-right" title="1. 从零开始" accesskey="n" rel="next">下一页 <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../preface/bug-reporting.html" class="btn btn-neutral float-left" title="5. 缺陷报告指南" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> 上一页</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; 版权所有 2019, Wayne Wang
+
+    </p>
+  </div>
+    
+    
+    
+    利用 <a href="http://sphinx-doc.org/">Sphinx</a> 构建，使用了 
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">主题</a>
+    
+    由 <a href="https://readthedocs.org">Read the Docs</a>开发. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
